@@ -12,15 +12,10 @@ jobs:
         with:
           python-version: '3.13.x'
       - run: pip install -r requirements.txt
-      - uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-          mode: onefile
-          enable-plugins: tk-inter
-          windows-console-mode: disable
+      - run: pip install pyinstaller
+      - run: pyinstaller --onefile --noconsole main.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: build\main.exe
+          name: main.exe
+          path: dist/main.exe
