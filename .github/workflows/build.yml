@@ -16,10 +16,10 @@ jobs:
         with:
           nuitka-version: main
           script-name: main.py
-          mode: standalone
+          mode: onefile
           enable-plugins: tk-inter
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: build\main.dist
+          path: build\main.exe
