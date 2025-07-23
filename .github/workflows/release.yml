@@ -1,0 +1,30 @@
+name: Build and Release Executable
+
+on:
+  release:
+    types: [published]
+
+env:
+  MAIN: main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.x'
+      - run: pip install -r requirements.txt
+      - run: pip install pyinstaller
+      - run: pyinstaller --onefile --noconsole ${{env.MAIN}}.py
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/${{env.MAIN}}.exe
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/${{env.MAIN}}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
